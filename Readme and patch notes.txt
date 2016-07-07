@@ -24,7 +24,25 @@ v.01    6/7/16
         time_to_run
             number of iterations of the algorithm
 
-
+v.02    7/7/16
+    Added functions:
+        experiment_design_values()
+            Gives information about the design, e.g. number of decrement_value conditions.
+        calculate_statistics()
+            Calculates rates for responses and reinforcers
+        herrnsteins_hyperbola()
+            Calculates value for herrnsteins hyperbola
+        fit_hyperbola()
+            Fits herrnsteins hyperbola to results from parametric experiment
+        output_to_csv()
+            Outputs results including raw records, statistics, and fitted values to csv
+    Changed functions:
+        recording_matrices()
+            Now supports parametric experiment
+        schedule_block()
+            Now supports parametric experiment
+        run()
+            Now supports parametric experiment
 
 
 
