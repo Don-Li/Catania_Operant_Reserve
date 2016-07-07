@@ -44,7 +44,10 @@ v.02    7/7/16
         run()
             Now supports parametric experiment
 
-
+v.03    7/7/16
+    Changed functions:
+        output_to_csv()
+            hyerbola csv file now correctly outputs hyperbola parameters
 
 
 References:

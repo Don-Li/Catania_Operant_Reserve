@@ -1,25 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Current patch notes:
-v.02    7/7/16
-    Added functions:
-        experiment_design_values()
-            Gives information about the design, e.g. number of decrement_value conditions.
-        calculate_statistics()
-            Calculates rates for responses and reinforcers
-        herrnsteins_hyperbola()
-            Calculates value for herrnsteins hyperbola
-        fit_hyperbola()
-            Fits herrnsteins hyperbola to results from parametric experiment
-        output_to_csv()
-            Outputs results including raw records, statistics, and fitted values to csv
+v.03    7/7/16
     Changed functions:
-        recording_matrices()
-            Now supports parametric experiment
-        schedule_block()
-            Now supports parametric experiment
-        run()
-            Now supports parametric experiment
+        output_to_csv()
+            hyerbola csv file now correctly outputs hyperbola parameters
 """
 import numpy as np
 import os
@@ -27,7 +12,7 @@ from scipy.optimize import curve_fit
 
 def reserve_replenishment(delay_vector,increment_max,function_type):
     if function_type == "exponential":
-        reserve_replenishment = np.sum(increment_max*np.exp(-delay_vector+1))
+        reserve_replenishment = np.sum(increment_max*np.exp((-delay_vector)+1))
     if function_type == "reciprocal":
         reserve_replenishment = np.sum(increment_max/delay_vector)
     if function_type == "hyperbolic":
@@ -175,14 +160,14 @@ def output_to_csv(record_matrix, working_directory, variable_interval_conditions
     file_name_hyperbola_matrix = "COR HYPERBOLA " + VI_string + decrement_value_condition_string + increment_max_condition_string + ".csv"
     file_headers_hyperbola_matrix = ["decrement_value number", "increment_max", "k", "re"]
     file_header_string_hyperbola_matrix = ','.join(file_headers_hyperbola_matrix)
-    np.savetxt(file_name_hyperbola_matrix, statistics_matrix, delimiter = ",", header = file_header_string_hyperbola_matrix)
+    np.savetxt(file_name_hyperbola_matrix, fitted_hyperbola_matrix, delimiter = ",", header = file_header_string_hyperbola_matrix)
     return None
 
 #Global variables
 reserve_max = 100000
 initial_reserve_level = 75000
 time_to_run = 25000
-function_type = "reciprocal"
+function_type = "exponential"
 bin_size = 500
 
 #parameters
