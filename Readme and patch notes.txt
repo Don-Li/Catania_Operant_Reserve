@@ -49,6 +49,10 @@ v.03    7/7/16
         output_to_csv()
             hyerbola csv file now correctly outputs hyperbola parameters
 
+v.04    11/7/16
+    Changed functions:
+        herrnsteins_hyperbola()
+            Now takes the base operant level as a specified global variable.
 
 References:
 
