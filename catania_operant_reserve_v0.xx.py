@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Current patch notes:
-v.03    7/7/16
+v.04    11/7/16
     Changed functions:
-        output_to_csv()
-            hyerbola csv file now correctly outputs hyperbola parameters
+        herrnsteins_hyperbola()
+            Now takes the base operant level as a specified global variable.
 """
 import numpy as np
 import os
@@ -12,7 +12,7 @@ from scipy.optimize import curve_fit
 
 def reserve_replenishment(delay_vector,increment_max,function_type):
     if function_type == "exponential":
-        reserve_replenishment = np.sum(increment_max*np.exp((-delay_vector)+1))
+        reserve_replenishment = np.sum(increment_max*np.exp((-delay_vector*0.001811)+1))
     if function_type == "reciprocal":
         reserve_replenishment = np.sum(increment_max/delay_vector)
     if function_type == "hyperbolic":
@@ -123,7 +123,7 @@ def calculate_statistics(conditions_matrix, levels_per_factor, number_of_session
     return None
 
 def herrnsteins_hyperbola(reinforcement_rate, k ,re):
-    predicted_response_rate =  reinforcement_rate * k / (reinforcement_rate + re) + 20
+    predicted_response_rate =  reinforcement_rate * k / (reinforcement_rate + re) + base_operant_level
     return predicted_response_rate
 
 def fit_hyperbola(statistics_matrix, fitted_hyperbola_matrix, levels_per_factor,conditions_matrix):
@@ -169,6 +169,7 @@ initial_reserve_level = 75000
 time_to_run = 25000
 function_type = "exponential"
 bin_size = 500
+base_operant_level = 0
 
 #parameters
 increment_max_conditions = np.array([.03])*reserve_max
