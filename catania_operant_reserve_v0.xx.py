@@ -1,42 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Current patch notes:
-v.05    13/7/16
-    Added functions:
-        cartesian_product()
-            Used for generating combinations of factors. Not yet implemented in any functions.
-            This function should go inside: recording_matrices(), calculate_statistics() and fit_hyperbola()
-        rate_multiplied_gamma_cdf()
-            Calculates values for a rate multiplied gamma cumulative density function
-        fit_gamma_cdf()
-            Fits response rates to observed rft rates with the rate_multiplied_gamma_cdf()
+v.06    14/7/16
     Changed functions:
-        reserve_replenishment()
-            Augmented the functions with scaling values.
-        recording_matrices()
-            Now uses the cartesian_product() function to produce the experiment details matrix.
-            The matrix previously used for the probability of responding (i,e, reserve now) merged into behavioural outcomes matrix.
-        calculate_statistics()
-            filling in the experimental details now done by cartesian_product().
-            Now also gives standard deviations for the rates.
-        fit_hyperbola()
-            fitting in the experimental details now done by cartesian_product()
-            calculates r squared and puts it into the fitted hyperbola matrix
-            also calculates a vector of residuals from fitting the hyperbola and puts them into statistics_matrix
         output_to_csv()
-            writing of file names now done in a loop
-            the files are updated to reflect the additional information that is added from other functions.
-            Now also writes a file for the fit_gamma_cdf()
-            We can now choose if we want to have the raw file.
-        schedule_block()
-            Now updates the record matrices with the new additional information
-            Now takes the replenishment scaling value as an argument
-        run()
-            Now iterates through the design matrix rather than having nested loops.
-        reserve_replenishment()
-            Now sums over positive weighting values when linear function is used.
-    Removed functions:
-        experiment_design_values()
+            Now makes nicer function names.
 """
 import numpy as np
 import os
@@ -185,12 +153,13 @@ def fit_gamma_cdf(statistics_matrix, fitted_gamma_cdf_matrix, levels_per_factor)
 
 def output_to_csv(record_matrix, working_directory, conditions_array, write_raw): #conditions_array order: decrement, increment, replenishment scaling, VI
     os.chdir(working_directory)
-    condition_initials = ["D ","I ","S ","V "] #decrement, increment, replenishment scaling, VI
+    condition_initials = ["D","I","S","V"] #decrement, increment, replenishment scaling, VI
     string_of_conditions = ""
     conditions_listing = conditions_array[:]
-    conditions_listing[2] = []
+    for i in range(0,len(conditions_array)):
+        conditions_listing[i] = list(conditions_array[i])
     for i in range(0,len(conditions_array[2])):
-        conditions_listing[2].append(str(conditions_array[2][i])[:6])
+        conditions_listing[2][i] = float('{0:.{1}f}'.format(conditions_listing[2][i],3))
     for i in range(0,len(condition_initials)):
         string_of_conditions += condition_initials[i]+''.join(str(conditions_listing[i]).strip('[]')) + "_"
     file_name = "COR RAW " + string_of_conditions + ".csv"
@@ -220,7 +189,7 @@ def output_to_csv(record_matrix, working_directory, conditions_array, write_raw)
 reserve_max = 100000
 initial_reserve_level = 75000
 time_to_run = 25000
-function_type = "hyperbolic"
+function_type = "exponential"
 bin_size = 500
 base_operant_level = 0
 
@@ -228,7 +197,7 @@ base_operant_level = 0
 increment_max_conditions = np.array([.03])*reserve_max
 decrement_value_conditions = np.array([.01])*reserve_max
 variable_interval_conditions = np.array([1,2,3,5,8,10,18,25,68,112,200])
-replenishment_scaling_conditions = np.array([6.345,5.713,5.081,4.451,3.823,3.200,2.587,2.009,1.440,0.914,0.443])
+replenishment_scaling_conditions = np.array([1882.287,0.995])
 
 #condition information
 conditions_array = [decrement_value_conditions, increment_max_conditions, replenishment_scaling_conditions, variable_interval_conditions]
