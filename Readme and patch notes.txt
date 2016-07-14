@@ -91,6 +91,11 @@ v.05    13/7/16
     Removed functions:
         experiment_design_values()
 
+v.06    14/7/16
+    Changed functions:
+        output_to_csv()
+            Now makes nicer function names.
+
 References:
 
 
